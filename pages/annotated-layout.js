@@ -24,6 +24,11 @@ import {
       const { startRange, endRange, enabled } = this.state;
       const contentStatus = enabled ? 'Disable' : 'Enable';
       const textStatus = enabled ? 'enabled' : 'disabled';
+
+      const startRangeInt = this.state.startRange
+      const endRangeInt = this.state.endRange
+      store.set('startRangeInt', startRangeInt)
+      store.set('endRangeInt', endRangeInt)
   
       return (
         <Page>

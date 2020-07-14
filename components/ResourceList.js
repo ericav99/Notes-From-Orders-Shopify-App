@@ -46,13 +46,31 @@ class ResourceListWithProducts extends React.Component {
       <Query query={GET_PRODUCTS_BY_ID} variables={{ endNumOrders: parseInt(store.get('endRangeInt'), 10) , numOrders: store.get('startRangeInt') }}>
         {({ data, loading, error }) => {
           const endNumOrder = store.get('endRangeInt')
+          var contents = [];
+
+          function loop(i) {
+            if(i < endNumOrder){
+              if(data.orders.edges[i].node.note == '')
+              {
+                console.log('*empty*')
+                contents.push(data.orders.edges[i].node.note)
+              } else {
+                console.log(data.orders.edges[i].node.note)
+                contents.push(data.orders.edges[i].node.note)
+              }
+              loop(i + 1)
+            } else {
+              console.log('Finished Reading!');
+            }
+          }
+
           if (loading) return <div>Loading…</div>;
-          console.log(store.get('endRangeInt'))
-          console.log(data.orders.edges[0].node.note)
-          console.log(data.orders.edges[1].node.note)
-          console.log(endNumOrder);
+          //console.log(store.get('endRangeInt'))
+          console.log('Number of orders to go to: ' + endNumOrder);
           if (error) return <div>{error.message}</div>;
-          console.log(data);
+          loop(0)
+          console.log(contents)
+          //console.log(data);
           return (
             <Card>
               <p>stuff here</p>
