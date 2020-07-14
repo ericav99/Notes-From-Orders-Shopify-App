@@ -1,63 +1,50 @@
-import React from 'react';
-import ReactDOM from "react-dom";
-import {Page, Layout, TextStyle, DataTable, Card} from '@shopify/polaris';
-import {DisplayText} from '@shopify/polaris';
-import {PlusMinor} from '@shopify/polaris-icons';
-import { AppProvider } from '@shopify/polaris';
-import en from '@shopify/polaris/locales/en.json';
-import "@shopify/polaris/styles.css";
-import { Provider } from '@shopify/app-bridge-react';
-import Cookies from 'js-cookie';
-import ApolloClient from 'apollo-boost';
-import { ApolloProvider } from 'react-apollo';
+import { EmptyState, Layout, Page } from '@shopify/polaris';
+import { ResourcePicker, TitleBar } from '@shopify/app-bridge-react';
 import store from 'store-js';
-import ResouceListWithProducts from '../components/ResourceList';
+import ResourceListWithProducts from '../components/ResourceList';
 
-const client = new ApolloClient({
-  fetchOptions: {
-    credentials: 'include'
-  },
-});
+const img = 'https://cdn.shopify.com/s/files/1/0757/9955/files/empty-state.svg';
 
-
-const rows = [
-  ['Customer Name 1', 10001, "none"],
-  ['Customer Name 2', 10002, "happy fathers day!"],
-  ['Customer Name 3',
-    10003, "get well soon Tif"],
-];
-
-const config = { apiKey: API_KEY, shopOrigin: Cookies.get("shopOrigin"), forceRedirect: true };
-
-const Index = () => (
-<Provider config={config}>
-  <AppProvider>
-  <Page>
-      <DisplayText size="extraLarge">Mayas Cookies Notes App</DisplayText>
-      <DisplayText size="Small">Created by Eric Av</DisplayText>
-      <AppProvider>
-
-      <ApolloProvider client={client}>
-        <Component {...pageProps} />
-      </ApolloProvider>
-
-        <Page
-        fullWidth
-        title="Extract Orders (choose from existing orders)"
-        primaryAction={{content: 'Get orders', icon: PlusMinor}}
-        pagination={{
-          hasNext: true,
-        }}
-        >
-      </Page>
-
-      
-   
-    </AppProvider>
-  </Page>
-  </AppProvider>
-</Provider>
-
-);
+class Index extends React.Component {
+  state = { open: false };
+  render() {
+    return (
+      <Page>
+        <TitleBar
+          title="Sample App"
+          primaryAction={{
+            content: 'Select products',
+            onAction: () => this.setState({ open: true }),
+          }}
+        />
+        <ResourcePicker
+          resourceType="Product"
+          showVariants={false}
+          open={this.state.open}
+          onSelection={(resources) => this.handleSelection(resources)}
+          onCancel={() => this.setState({ open: false })}
+        />
+        <Layout>
+          <EmptyState
+            heading="Select products to start"
+            action={{
+              content: 'Select products',
+              onAction: () => this.setState({ open: true }),
+            }}
+            image={img}
+          >
+            <p>Select products and change their price temporarily</p>
+          </EmptyState>
+        </Layout>
+        <ResourceListWithProducts />
+      </Page >
+    );
+  }
+  handleSelection = (resources) => {
+    const idsFromResources = resources.selection.map((product) => product.id);
+    this.setState({ open: false });
+    store.set('ids', idsFromResources);
+  };
+}
 
 export default Index;
