@@ -54,14 +54,17 @@ class ResourceListWithProducts extends React.Component {
               {
                 console.log('*empty*')
                 contents.push(data.orders.edges[i].node.note)
+                contents.push(data.orders.edges[i].node.name)
               } else {
                 console.log(data.orders.edges[i].node.note)
                 contents.push(data.orders.edges[i].node.note)
+                contents.push(data.orders.edges[i].node.name)
               }
               loop(i + 1)
             } else {
               console.log('Finished Reading!');
             }
+            store.set('contents', contents)
           }
 
           if (loading) return <div>Loading…</div>;
