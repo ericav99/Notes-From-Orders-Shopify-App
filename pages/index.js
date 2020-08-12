@@ -30,12 +30,18 @@ class Index extends React.Component {
 
 
         let doc = new jsPDF('p','pt', 'a4');
-        const endNumOrder = store.get('endRangeInt')
+        var endNumOrder = parseInt(store.get('endRangeInt'), 10)
+        var startRangeInt = parseInt(store.get('startRangeInt'), 10)
         var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight();
         var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth();
         var contents = store.get('contents')
         console.log('for pdf: ' + contents )
         console.log(i)
+        if(startRangeInt == 0)
+        {
+          endNumOrder = endNumOrder + 1
+          console.log(endNumOrder)
+        }
         if(i < (endNumOrder*2)){
           //string length and content
           var stringContent = String(contents[i])
@@ -44,9 +50,44 @@ class Index extends React.Component {
 
           // pdf.addImage(base64_source, image format, X, Y, width, height)
           doc.addImage(img, 'JPEG', 100, 100, 300, 100)
-          if(contents[i] == '')
+          if(contents[i] != '')
           {
-            i = i + 2
+             //test if string extends beyond page. then split
+             if(stringLenght > 76)
+             {
+               var middle = Math.floor(stringContent.length/2)
+               var before = stringContent.lastIndexOf(' ', middle)
+               var after = stringContent.indexOf(' ', middle + 1)
+               
+               if(middle - before < after - middle) {
+                 middle = before
+               }
+               else {
+                 middle = after
+               }
+               var s1 = stringContent.substr(0, middle)
+               var s2 = stringContent.substr(middle + 1)
+ 
+               //check for newline
+               if(!stringContent.includes("\n"))
+               {
+                 doc.setFontSize(14)
+                 console.log('false')
+                 doc.text('\n\n\n\n' + s1 +'\n' + s2 + '\n\n\n' + contents[i+1], 275, 160, 'center');
+               }
+               else {
+               doc.text('\n\n\n\n' + stringContent + '\n\n\n' + contents[i+1], 275, 160, 'center');
+               }
+             }
+             else {
+               doc.setFontSize(16);
+               doc.text('\n\n\n\n' + contents[i] + '\n\n\n' + contents[i+1], 250, 160, 'center');
+             }
+             doc.setFont('courier') 
+             doc.setFontType('normal')
+             doc.save(contents[i+1])
+          }
+          else {
             if(stringLenght > 76)
             {
               var middle = Math.floor(stringContent.length/2)
@@ -78,42 +119,6 @@ class Index extends React.Component {
             doc.text('\n\n\n\n' + contents[i] + '\n\n\n' + contents[i+1], 250, 160, 'center');
             }
           }
-          else {
-            //test if string extends beyond page. then split
-            if(stringLenght > 76)
-            {
-              var middle = Math.floor(stringContent.length/2)
-              var before = stringContent.lastIndexOf(' ', middle)
-              var after = stringContent.indexOf(' ', middle + 1)
-              
-              if(middle - before < after - middle) {
-                middle = before
-              }
-              else {
-                middle = after
-              }
-              var s1 = stringContent.substr(0, middle)
-              var s2 = stringContent.substr(middle + 1)
-
-              //check for newline
-              if(!stringContent.includes("\n"))
-              {
-                doc.setFontSize(14)
-                console.log('false')
-                doc.text('\n\n\n\n' + s1 +'\n' + s2 + '\n\n\n' + contents[i+1], 275, 160, 'center');
-              }
-              else {
-              doc.text('\n\n\n\n' + stringContent + '\n\n\n' + contents[i+1], 275, 160, 'center');
-              }
-            }
-            else {
-              doc.setFontSize(16);
-              doc.text('\n\n\n\n' + contents[i] + '\n\n\n' + contents[i+1], 250, 160, 'center');
-            }
-          }
-          doc.setFont('courier') 
-          doc.setFontType('normal')
-          doc.save(contents[i+1])
           i = i + 1
           pdfMake(i+1)
         } else {
