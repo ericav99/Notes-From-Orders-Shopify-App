@@ -133,7 +133,7 @@ class Index extends React.Component {
     return (
       <Page>
           <Card>
-              <p>Step 1: Enter range of orders to download from 'Set Order Range' tab</p>
+              <p>Step 1: Enter set of orders to download from 'Set Order Range' tab</p>
               <p>Step 2: Click Generate PDF from 'Create PDF's from Range' tab</p>
           </Card>
         <TitleBar
@@ -166,9 +166,6 @@ class Index extends React.Component {
     );
   }
   handleSelection = (resources) => {
-    const idsFromResources = resources.selection.map((product) => product.id);
-    this.setState({ open: false });
-    store.set('ids', idsFromResources);
   };
 }
 

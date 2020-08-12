@@ -43,13 +43,13 @@ import {
                     <TextField
                       value={startRange}
                       onChange={this.handleChange('startRange')}
-                      label="Starting Order (Number given is one order before starting order, ie: 0 means it first makes a pdf of 1, etc)"
+                      label="Starting Order (If 0 is given => ie: Starting Order: 0, Orders to search and make: 1 => will make orders 0,1. Otherwise, Starting Order: 1, Orders to search and make: 3 => will make orders 2,3,4)"
                       type="startRange"
                     />
                     <TextField
                       value={endRange}
                       onChange={this.handleChange('endRange')}
-                      label="Orders to make after start"
+                      label="Orders to search and make"
                       type="endRange"
                     />
                     <Stack distribution="trailing">

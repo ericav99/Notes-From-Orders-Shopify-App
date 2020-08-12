@@ -95,7 +95,7 @@ class ResourceListWithProducts extends React.Component {
         }
         else
         {
-          console.log("error in cursorData")
+          console.log("start range entered was 0. Will add first order on top of desired number of orders to process")
         }
         return (
           <Card>
