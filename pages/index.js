@@ -1,4 +1,4 @@
-import { EmptyState, Layout, Page } from '@shopify/polaris';
+import { EmptyState, Layout, Page, DataTable, Button } from '@shopify/polaris';
 import { ResourcePicker, TitleBar } from '@shopify/app-bridge-react';
 import store from 'store-js';
 import ResourceListWithProducts from '../components/ResourceList';
@@ -15,6 +15,49 @@ class Index extends React.Component {
   render() {
 
     var jsZip = require('jszip')
+    //var HashMap = require('hashmap')
+    var contents = store.get('contents')
+    var endNumOrder = parseInt(store.get('endRangeInt'), 10)
+    var startRangeInt = parseInt(store.get('startRangeInt'), 10)
+    var array1 = []
+    var array2 = []
+    var hashmap = []
+    var map = []
+
+    var contentLength = endNumOrder * 2
+
+    //makes the hashmap
+    // function rowMaker(i)
+    // {
+    //   var contents = store.get('contents')
+    //   if(i <= contentLength + 1)
+    //   {
+    //     array1.push(contents[i])
+    //     //hashmap.set(contents[i], contents[i+1])
+    //     rowMaker(i+1)
+    //   }
+    //   else
+    //   {
+    //     console.log('done making double array')
+    //     console.log(array1)
+    //   }
+    // }
+
+    function chunkArray(i){
+      var chunk_size = 2
+      if(i < contents.length)
+      {
+        var myChunk = contents.slice(i, i + chunk_size)
+        hashmap.push(myChunk)
+        i += chunk_size
+        chunkArray(i)
+      }
+      console.log(hashmap)
+      
+    }
+    //rowMaker(0)
+    console.log(contents)
+    console.log(hashmap)
 
     function pdfMake(i)
     {
@@ -34,8 +77,7 @@ class Index extends React.Component {
         var startRangeInt = parseInt(store.get('startRangeInt'), 10)
         var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight();
         var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth();
-        var contents = store.get('contents')
-        console.log('for pdf: ' + contents )
+        console.log('for pdf: ' + contents)
         console.log(i)
         if(startRangeInt == 0)
         {
@@ -130,12 +172,33 @@ class Index extends React.Component {
         console.log("okay")
     }
   }
+  //chunkArray(0)
     return (
       <Page>
           <Card>
               <p>Step 1: Enter set of orders to download from 'Set Order Range' tab</p>
               <p>Step 2: Click Generate PDF from 'Create PDF's from Range' tab</p>
           </Card>
+          <Card>
+        <DataTable
+          columnContentTypes={[
+            'text',
+            'text',
+          ]}
+          headings={[
+            'Order Note',
+            'Order Name',
+          ]}
+          rows={hashmap}
+        />
+      </Card>
+      <EmptyState
+        action={{
+          content: 'Review Orders',
+          onAction: () => chunkArray(0),
+        }}
+      >
+      </EmptyState>
         <TitleBar
           title="Order Notes to PDF"
           // primaryAction={{
