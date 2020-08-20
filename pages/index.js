@@ -3,7 +3,6 @@ import { ResourcePicker, TitleBar } from '@shopify/app-bridge-react';
 import store from 'store-js';
 import ResourceListWithProducts from '../components/ResourceList';
 import { Card } from '@shopify/polaris';
-import myImage from './logo'
 import { getDataFromTree } from 'react-apollo';
 import JSZip from 'jszip';
 
