@@ -91,7 +91,7 @@ class Index extends React.Component {
           console.log(stringLenght)
 
           // pdf.addImage(base64_source, image format, X, Y, width, height)
-          doc.addImage(img, 'JPEG', 100, 100, 300, 100)
+          doc.addImage(img, 'JPEG', 150, 100, 300, 100)
           if(contents[i] != '')
           {
              //test if string extends beyond page. then split
@@ -115,15 +115,15 @@ class Index extends React.Component {
                {
                  doc.setFontSize(14)
                  console.log('false')
-                 doc.text('\n\n\n\n' + s1 +'\n' + s2 + '\n\n\n' + contents[i+1], 275, 160, 'center');
+                 doc.text('\n\n\n\n' + s1 +'\n' + s2 + '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n' + contents[i+1], 300, 160, 'center');
                }
                else {
-               doc.text('\n\n\n\n' + stringContent + '\n\n\n' + contents[i+1], 275, 160, 'center');
+               doc.text('\n\n\n\n' + stringContent + '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n' + contents[i+1], 300, 160, 'center');
                }
              }
              else {
                doc.setFontSize(16);
-               doc.text('\n\n\n\n' + contents[i] + '\n\n\n' + contents[i+1], 250, 160, 'center');
+               doc.text('\n\n\n\n' + contents[i] + '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n' + contents[i+1], 300, 160, 'center');
              }
              doc.setFont('courier') 
              doc.setFontType('normal')
@@ -150,15 +150,15 @@ class Index extends React.Component {
               {
                 doc.setFontSize(14);
                 console.log('false')
-                doc.text('\n\n\n\n' + s1 + '\n' + s2 + '\n\n\n' + contents[i+1], 275, 160, 'center');
+                doc.text('\n\n\n\n' + s1 + '\n' + s2 + '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n' + contents[i+1], 300, 160, 'center');
               }
               else {
-              doc.text('\n\n\n\n' + stringContent + '\n\n\n' + contents[i+1], 275, 160, 'center');
+              doc.text('\n\n\n\n' + stringContent + '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n' + contents[i+1], 300, 160, 'center');
               }
             }
             else {
             doc.setFontSize(16);
-            doc.text('\n\n\n\n' + contents[i] + '\n\n\n' + contents[i+1], 250, 160, 'center');
+            doc.text('\n\n\n\n' + contents[i] + '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n' + contents[i+1], 300, 160, 'center');
             }
           }
           i = i + 1
